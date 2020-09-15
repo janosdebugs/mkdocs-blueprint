@@ -15,11 +15,32 @@ jobs:
           architecture: 'x64'
       - name: Checkout master
         uses: actions/checkout@v2
+        with:
+          path: project
+      - name: Checkout gh-pages
+        uses: actions/checkout@v2
+        with:
+          path: production
+          ref: gh-pages
       - name: Install
         run: |
           pip install -r requirements.txt
-      - name: Deploy docs
-        uses: mhausenblas/mkdocs-deploy-gh-pages@master
+        working-directory: project
+      - name: Build
+        run: mkdocs build
         env:
           ENABLE_PDF_EXPORT: 1
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        working-directory: project
+      - name: Set remote
+        run: |
+          git remote set-url origin $(git remote show origin | grep "Fetch URL" | sed -e 's/.*: //' | sed -e 's/https:\/\/github.com\//git@github.com:/')
+        working-directory: production
+      - name: config
+        run: "sed -i -e 's/theme_handler_path: pdf-theme-handler.py/theme_handler_path: ..\\/project\\/pdf-theme-handler.py/' ../project/mkdocs.yml"
+        working-directory: production
+      - name: deploy
+        run: mkdocs gh-deploy --config-file ../project/mkdocs.yml --remote-branch master
+        env:
+          ENABLE_PDF_EXPORT: 1
+        working-directory: production
+
