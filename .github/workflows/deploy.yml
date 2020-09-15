@@ -31,10 +31,6 @@ jobs:
         env:
           ENABLE_PDF_EXPORT: 1
         working-directory: project
-      - name: Set remote
-        run: |
-          git remote set-url origin $(git remote show origin | grep "Fetch URL" | sed -e 's/.*: //' | sed -e 's/https:\/\/github.com\//git@github.com:/')
-        working-directory: production
       - name: config
         run: "sed -i -e 's/theme_handler_path: pdf-theme-handler.py/theme_handler_path: ..\\/project\\/pdf-theme-handler.py/' ../project/mkdocs.yml"
         working-directory: production
