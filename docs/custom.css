@@ -72,10 +72,6 @@ code,kbd,pre{
   clear: both;
 }
 
-.md-footer {
-  background: var(--md-default-fg-color--light)
-}
-
 .md-typeset .tldr>.admonition-title::before, .md-typeset .tldr>summary::before {
   background-color: var(--md-accent-fg-color)
 }
