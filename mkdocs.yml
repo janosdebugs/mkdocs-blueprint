@@ -14,8 +14,7 @@ theme:
   features:
     - tabs
   font: false
-  logo: logo-wide.svg
-  favicon: favicon.svg
+  social: social.png
   custom_dir: theme
 extra_css:
   - custom.css
